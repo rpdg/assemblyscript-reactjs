@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import waApi from './wa-api';
 
 function App() {
+
+  const [ value, setValue ] = useState(5);
+  const [ result, setResult ] = useState();
+  const [scamble, setScramble] = useState('scramble this string');
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>
+        The factorial of
+        <input value={value} onChange={evt => setValue(parseInt(evt.target.value, 10) || 0)} />
+        is {result}
+      </p>
+      <button onClick={async () => setResult((await waApi).factorial(value))}>
+        Calculate
+      </button>
+
+      <p>Scrambled string: {scamble}</p>
+      <button onClick={async () => setScramble((await waApi).scramble(scamble))}>
+        Scramble
+      </button>
     </div>
   );
 }
